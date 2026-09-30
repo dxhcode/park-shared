@@ -1,0 +1,42 @@
+{
+  "name": "@park/components",
+  "version": "0.1.0",
+  "description": "园区平台共享 Vue 组件。",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit",
+    "prepare": "vite build && vue-tsc -p tsconfig.build.json --emitDeclarationOnly"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxhcode/park-shared.git",
+    "directory": "packages/components"
+  }
+}

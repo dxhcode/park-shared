@@ -1,0 +1,40 @@
+{
+  "name": "@park/theme",
+  "version": "0.1.0",
+  "description": "园区管理端与大屏主题：CSS 变量与 ant-design-vue 设计令牌。",
+  "type": "module",
+  "files": [
+    "dist",
+    "src/theme.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./theme.css": "./src/theme.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "ant-design-vue": "^4.2.0"
+  },
+  "devDependencies": {
+    "ant-design-vue": "^4.2.6",
+    "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxhcode/park-shared.git",
+    "directory": "packages/theme"
+  }
+}

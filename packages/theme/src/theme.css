@@ -1,0 +1,79 @@
+/*
+ * 园区共享主题。
+ * 管理端：:root 与 [data-park-theme="admin"]，浅底 + 墨色点缀。
+ * 大屏： [data-park-theme="screen"] 或 .park-screen-bg，深海军蓝 + 青辉光 + 玻璃。
+ * 使用：import '@park/theme/theme.css'，再调用 applyParkTheme('admin' | 'screen')。
+ */
+
+:root,
+[data-park-theme='admin'] {
+  color-scheme: light;
+  --park-color-primary: #1d39c4;
+  --park-color-accent: #0e1320;
+  --park-color-highlight: #c6a15b;
+  --park-color-bg: #f3f5fb;
+  --park-color-surface: #ffffff;
+  --park-color-text: #1a1d26;
+  --park-color-text-secondary: #5c6578;
+  --park-color-border: rgba(14, 19, 32, 0.12);
+  --park-color-glow: transparent;
+  --park-header-bg: #0e1320;
+  --park-header-text: #f4f7ff;
+  --park-sider-bg: #141a2a;
+  --park-radius: 10px;
+  --park-radius-lg: 16px;
+  --park-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 249, 255, 0.88));
+  --park-glass-border: rgba(14, 19, 32, 0.08);
+  --park-glass-blur: 14px;
+  --park-shadow: 0 14px 40px rgba(14, 19, 32, 0.08);
+  --park-glow: 0 0 0 1px rgba(198, 161, 91, 0.28);
+  --park-font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --park-font-display: "DIN Alternate", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --park-grid-line: transparent;
+  background-color: var(--park-color-bg);
+  color: var(--park-color-text);
+  font-family: var(--park-font-family);
+}
+
+[data-park-theme='screen'],
+.park-screen-bg {
+  color-scheme: dark;
+  --park-color-primary: #22d3ee;
+  --park-color-accent: #3b82f6;
+  --park-color-highlight: #67e8f9;
+  --park-color-bg: #05070f;
+  --park-color-surface: rgba(10, 18, 40, 0.72);
+  --park-color-text: #e7f6ff;
+  --park-color-text-secondary: #8fb4d6;
+  --park-color-border: rgba(94, 234, 255, 0.35);
+  --park-color-glow: rgba(34, 211, 238, 0.45);
+  --park-header-bg: rgba(5, 10, 24, 0.82);
+  --park-header-text: #e7f6ff;
+  --park-sider-bg: rgba(8, 14, 32, 0.92);
+  --park-radius: 14px;
+  --park-radius-lg: 18px;
+  --park-glass-bg: linear-gradient(155deg, rgba(20, 40, 82, 0.72), rgba(6, 12, 28, 0.62));
+  --park-glass-border: rgba(94, 234, 255, 0.38);
+  --park-glass-blur: 18px;
+  --park-shadow: 0 0 0 1px rgba(56, 189, 248, 0.16), inset 0 0 32px rgba(34, 211, 238, 0.06);
+  --park-glow: 0 0 24px rgba(34, 211, 238, 0.28);
+  --park-font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --park-font-display: "Rajdhani", "DIN Alternate", "Segoe UI", sans-serif;
+  --park-grid-line: rgba(56, 189, 248, 0.08);
+  background-color: var(--park-color-bg);
+  background-image:
+    radial-gradient(ellipse at 8% -12%, rgba(34, 211, 238, 0.22), transparent 46%),
+    radial-gradient(ellipse at 96% 0%, rgba(59, 130, 246, 0.28), transparent 42%),
+    linear-gradient(var(--park-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--park-grid-line) 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+  background-position: center, center, center, center;
+  color: var(--park-color-text);
+  font-family: var(--park-font-family);
+}
+
+[data-park-theme='screen'] ::selection,
+.park-screen-bg ::selection {
+  background: rgba(34, 211, 238, 0.35);
+  color: #ffffff;
+}
