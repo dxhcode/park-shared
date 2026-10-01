@@ -2,7 +2,7 @@
   "name": "@park/playground",
   "version": "0.1.0",
   "private": true,
-  "description": "本地预览共享主题与组件，不是平台应用。",
+  "description": "本地预览共享主题、登录壳与布局，不是平台应用。",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173"

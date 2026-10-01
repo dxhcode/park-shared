@@ -1,8 +1,30 @@
 import assert from 'node:assert/strict'
 import { existsSync } from 'node:fs'
-import { getParkOverview, paginate, parks, queryEnterprises } from '../packages/mock/dist/index.js'
+import {
+  AuthMockError,
+  demoCredentials,
+  getCurrentUser,
+  getRememberedUsername,
+  getParkOverview,
+  isAuthenticated,
+  login,
+  logout,
+  paginate,
+  parks,
+  queryEnterprises,
+} from '../packages/mock/dist/index.js'
 import { adminAntdTheme, applyParkTheme, screenAntdTheme } from '../packages/theme/dist/index.js'
-import { AppLogo, EmptyState, GlassCard, KpiStat, PageHeader } from '../packages/components/dist/index.js'
+import {
+  AdminLayout,
+  AppLogo,
+  EmptyState,
+  GlassCard,
+  KpiStat,
+  LoginForm,
+  LoginPage,
+  PageHeader,
+  ScreenLayout,
+} from '../packages/components/dist/index.js'
 
 assert.equal(parks.length, 3)
 assert.equal(parks[0]?.name, '滨江云栖科创园')
@@ -27,10 +49,43 @@ assert.equal(screenAntdTheme.token?.colorPrimary, '#22d3ee')
 assert.equal(typeof applyParkTheme, 'function')
 applyParkTheme('screen')
 
-for (const component of [AppLogo, PageHeader, GlassCard, EmptyState, KpiStat]) {
+for (const component of [AppLogo, PageHeader, GlassCard, EmptyState, KpiStat, LoginForm, LoginPage, AdminLayout, ScreenLayout]) {
   assert.equal(typeof component, 'object')
   assert.ok(component)
 }
+
+assert.equal(demoCredentials.length, 2)
+assert.equal(demoCredentials[0]?.roleLabel, '园区管理员')
+assert.equal(demoCredentials[1]?.roleLabel, '园区运营')
+
+const session = await login('admin', 'admin123', { remember: true, delayMs: 0 })
+assert.equal(session.user.displayName, '陈启明')
+assert.equal(session.user.roleLabel, '园区管理员')
+assert.equal(session.token.startsWith('park-demo.admin.'), true)
+assert.equal(isAuthenticated(), true)
+assert.equal(getCurrentUser()?.username, 'admin')
+assert.equal(getRememberedUsername(), 'admin')
+logout()
+assert.equal(isAuthenticated(), false)
+assert.equal(getCurrentUser(), null)
+assert.equal(getRememberedUsername(), 'admin')
+
+const operator = await login('operator', 'operator123', { remember: false, delayMs: 0 })
+assert.equal(operator.user.roleLabel, '园区运营')
+assert.equal(getRememberedUsername(), null)
+logout()
+
+await assert.rejects(() => login('admin', 'wrong-password', { delayMs: 0 }), (error) => {
+  assert.equal(error instanceof AuthMockError, true)
+  assert.equal(error.message, '账号或密码不正确')
+  return true
+})
+await assert.rejects(() => login('  ', '', { delayMs: 0 }), (error) => {
+  assert.equal(error instanceof AuthMockError, true)
+  assert.equal(error.message, '请输入账号和密码')
+  return true
+})
+assert.equal(isAuthenticated(), false)
 
 assert.equal(existsSync(new URL('../packages/theme/src/theme.css', import.meta.url)), true)
 assert.equal(existsSync(new URL('../packages/components/dist/style.css', import.meta.url)), true)

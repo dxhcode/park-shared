@@ -1,7 +1,7 @@
 {
   "name": "@park/mock",
   "version": "0.1.0",
-  "description": "园区、企业、楼宇样例主数据与查询辅助函数。",
+  "description": "园区样例主数据、查询辅助，以及登录会话模拟。",
   "type": "module",
   "files": [
     "dist"

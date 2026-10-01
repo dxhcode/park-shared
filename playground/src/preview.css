@@ -15,6 +15,154 @@ body {
   font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
+.app-root[data-view='auth'] {
+  --park-layout-min-height: calc(100vh - 56px);
+  background: #070b16;
+}
+
+.app-switch {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px;
+  background: rgba(14, 19, 32, 0.94);
+}
+
+.app-switch__chip {
+  padding: 4px;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.auth-demo {
+  min-height: var(--park-layout-min-height, calc(100vh - 56px));
+}
+
+.demo-hint-title {
+  margin: 0 0 8px;
+  color: var(--park-color-text-secondary, #5c6578);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.demo-accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo-accounts button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--park-color-border, rgba(14, 19, 32, 0.12));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.demo-accounts button strong {
+  font-size: 13px;
+}
+
+.demo-accounts button span {
+  color: var(--park-color-text-secondary, #5c6578);
+  font-size: 12px;
+}
+
+.demo-accounts button:hover {
+  border-color: var(--park-color-primary, #1d39c4);
+}
+
+.sider-note {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: rgba(244, 247, 255, 0.78);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.park-admin.is-collapsed .sider-note {
+  display: none;
+}
+
+.sider-note p {
+  margin: 0;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  color: #c6a15b;
+}
+
+.crumb {
+  letter-spacing: 0.12em;
+  font-size: 13px;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.who strong {
+  font-size: 14px;
+}
+
+.who em {
+  font-style: normal;
+  font-size: 12px;
+  color: rgba(244, 247, 255, 0.62);
+}
+
+.session {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.session div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.session dt {
+  color: var(--park-color-text-secondary, #5c6578);
+}
+
+.session dd {
+  margin: 0;
+}
+
+.identity {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.identity-role {
+  margin: 6px 0 0;
+  color: var(--park-color-text-secondary, #5c6578);
+}
+
+.token {
+  overflow: hidden;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .preview-shell {
   padding: 28px 20px 48px;
 }

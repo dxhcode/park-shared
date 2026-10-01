@@ -10,7 +10,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['vue'],
+      external: (id) => id === 'vue' || id === 'ant-design-vue' || id.startsWith('ant-design-vue/'),
       output: {
         assetFileNames: 'style.css',
       },
