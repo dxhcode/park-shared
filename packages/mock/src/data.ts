@@ -240,6 +240,6 @@ export const enterprises: Enterprise[] = [
 
 export const mockMeta = {
   version: '0.1.0',
-  updatedAt: '2026-10-02',
-  description: '园区主数据与演示账号，仅供原型演示，不代表真实主体。',
+  updatedAt: '2026-10-03',
+  description: '园区主数据、通用列表示例与演示账号，仅供原型演示，不代表真实主体。',
 } as const

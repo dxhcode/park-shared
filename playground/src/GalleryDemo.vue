@@ -63,6 +63,7 @@ const park = computed(() => overview.value?.park)
               <GlassCard title="无匹配结果" :glow="false">
                 <EmptyState
                   v-if="empty.total === 0"
+                  variant="search"
                   title="没有匹配的企业"
                   description="换一个关键词，或清空筛选后再查。"
                 />
@@ -106,7 +107,7 @@ const park = computed(() => overview.value?.park)
                 </ul>
               </GlassCard>
               <GlassCard title="空态">
-                <EmptyState title="暂无告警" description="今日没有新的设备或能耗告警。" />
+                <EmptyState variant="done" title="暂无告警" description="今日没有新的设备或能耗告警。" />
               </GlassCard>
             </div>
           </div>

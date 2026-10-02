@@ -80,3 +80,74 @@ export interface ParkOverview {
   buildingCount: number
   occupancyAvg: number
 }
+
+export type NoticeLevel = '普通' | '重要' | '紧急'
+export type NoticeStatus = '已发布' | '草稿'
+
+export interface Notice {
+  id: string
+  parkId: string
+  title: string
+  category: string
+  level: NoticeLevel
+  publisher: string
+  publishedAt: string
+  status: NoticeStatus
+  summary: string
+}
+
+export type TicketPriority = '低' | '中' | '高'
+export type TicketStatus = '待处理' | '处理中' | '已完成' | '已关闭'
+
+export interface WorkOrder {
+  id: string
+  parkId: string
+  title: string
+  category: string
+  priority: TicketPriority
+  status: TicketStatus
+  requester: string
+  assignee: string
+  createdAt: string
+  location: string
+}
+
+export type VisitStatus = '待审核' | '已通过' | '已到访' | '已取消'
+
+export interface Visit {
+  id: string
+  parkId: string
+  visitor: string
+  company: string
+  host: string
+  purpose: string
+  visitDate: string
+  status: VisitStatus
+  plateNo: string
+}
+
+export interface NoticeQuery {
+  parkId?: string
+  keyword?: string
+  status?: NoticeStatus
+  level?: NoticeLevel
+  page?: number
+  pageSize?: number
+}
+
+export interface WorkOrderQuery {
+  parkId?: string
+  keyword?: string
+  status?: TicketStatus
+  priority?: TicketPriority
+  page?: number
+  pageSize?: number
+}
+
+export interface VisitQuery {
+  parkId?: string
+  keyword?: string
+  status?: VisitStatus
+  page?: number
+  pageSize?: number
+}

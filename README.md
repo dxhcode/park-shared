@@ -1,16 +1,22 @@
 # park-shared
 
-园区平台的共享前端库。`park-industry`、`park-campus`、`park-gov` 从这里拿主题、组件、登录壳、布局壳和模拟数据。各端自己的菜单、页面和真实接口仍留在各自仓库。
+园区平台的共享前端库。`park-industry`、`park-campus`、`park-gov` 从这里拿主题、组件、登录壳、布局壳、页面壳和模拟数据。各端自己的菜单、页面和真实接口仍留在各自仓库。
+
+## 进度
+
+- D1：主题、基础组件、园区主数据
+- D2（2026-10-02）：登录壳、布局壳、本地鉴权模拟
+- D3（2026-10-03）：空态变体、列表 / 详情 / 表单页面壳、页面动效，以及公告、工单、来访列表示例
 
 ## 包
 
 | 包 | 内容 |
 | --- | --- |
-| `@park/theme` | 管理端 / 大屏 CSS 变量，以及 ant-design-vue 4 的 `ThemeConfig` |
-| `@park/components` | 页头与指标，加上 `LoginForm` / `LoginPage`、`AdminLayout`、`ScreenLayout` |
-| `@park/mock` | 园区、企业、楼宇样例，分页与搜索，以及演示账号和本地会话 |
+| `@park/theme` | 管理端 / 大屏 CSS 变量、ant-design-vue 4 的 `ThemeConfig`，以及 `motion.css` |
+| `@park/components` | 页头、指标、空态、页面壳，加上 `LoginForm` / `LoginPage`、`AdminLayout`、`ScreenLayout` |
+| `@park/mock` | 园区、企业、楼宇，以及公告 / 工单 / 来访；分页与搜索；演示账号和本地会话 |
 
-`playground` 是本地对照预览，不是平台应用。默认先走登录，进入布局壳后再退出；「组件对照」仍保留管理端与大屏并排。
+`playground` 是本地对照预览，不是平台应用。默认先走登录，进入布局壳后再退出。右上角可切到「组件对照」或「页面壳」。
 
 ## 本地命令
 
@@ -58,30 +64,145 @@ applyParkTheme('admin')
 import {
   AdminLayout,
   AppLogo,
+  DetailPageShell,
+  DetailSection,
   EmptyState,
+  FormPageShell,
   GlassCard,
   KpiStat,
+  ListMotion,
+  ListPageShell,
   LoginForm,
   LoginPage,
   PageHeader,
+  RouteMotion,
   ScreenLayout,
 } from '@park/components'
-import type { LoginPayload } from '@park/components'
+import type { EmptyTone, EmptyVariant, LoginPayload } from '@park/components'
 ```
 
-记得同时引入 `@park/components/style.css`。默认文案是中文，例如空态「暂无数据」、登录按钮「进入工作台」。`@park/components` 把 `vue` 和 `ant-design-vue` 视为 peer。
+记得同时引入 `@park/components/style.css`。默认文案是中文，例如空态「暂无数据」、登录按钮「进入工作台」。`@park/components` 把 `vue` 和 `ant-design-vue` 视为 peer。动效类名已经打进这份 `style.css`；只想要 CSS 时也可以单独引 `@park/theme/motion.css`。
 
 | 组件 | 说明 |
 | --- | --- |
 | `AppLogo` | 标识和名称。`title` / `subtitle`，可用 `mark` 插槽换图标 |
 | `PageHeader` | 页头。必填 `title`，可选 `eyebrow`、`subtitle` 和 `extra` 插槽 |
 | `GlassCard` | 玻璃卡片。`title`、`glow`，正文默认插槽，右侧 `extra` |
-| `EmptyState` | 空态。`title`、`description` 和 `action` 插槽 |
+| `EmptyState` | 空态。插画、标题、说明，主按钮和次按钮 |
 | `KpiStat` | 指标。`label`、`value`、`unit`、`trend`（百分比）、`hint` |
+| `ListPageShell` | 列表页。筛选插槽、默认插槽放表格或卡片、分页、空态 |
+| `DetailPageShell` | 详情页。页头操作、`meta` 插槽、分段放默认插槽 |
+| `DetailSection` | 详情里的一块。`title`、`hint`，右侧 `extra` |
+| `FormPageShell` | 表单页。默认插槽放表单，底部操作可吸底 |
+| `RouteMotion` | 路由或视图切换。`name` 用淡入或侧滑 |
+| `ListMotion` | 列表入场。包住带 `key` 的子节点 |
 | `LoginForm` | 账号、密码、记住账号。校验通过后抛出 `submit` |
 | `LoginPage` | 深色入口加玻璃卡片，内部放着 `LoginForm` |
 | `AdminLayout` | 管理端壳：侧栏、顶栏、内容插槽。底色走主题变量 |
 | `ScreenLayout` | 大屏壳：顶栏和内容插槽，自带 `data-park-theme="screen"` |
+
+### 空态
+
+`variant` 决定插画：`empty`、`search`、`error`、`locked`、`done`。`tone` 为 `auto` 时跟祖先的 `data-park-theme`；写成 `admin` 或 `screen` 时，节点自己套那套变量。管理端是白底、墨色圆标和金环；大屏是玻璃底和青辉光。`icon` 插槽可换掉插画。
+
+`primaryText` / `secondaryText` 会渲染按钮，并抛出 `primary`、`secondary`。也可以用同名插槽替换。原来的 `action` 插槽仍可用。
+
+```vue
+<EmptyState
+  variant="search"
+  title="没有匹配的企业"
+  description="换一个关键词，或清空筛选后再查。"
+  primary-text="清空筛选"
+  secondary-text="返回列表"
+  @primary="reset"
+  @secondary="back"
+/>
+```
+
+### 页面壳
+
+三个壳都不包含菜单，也不发请求。表格、描述列表和表单控件仍由各端用 ant-design-vue 放进插槽。
+
+```vue
+<ListPageShell
+  eyebrow="企业"
+  title="在园企业"
+  :loading="loading"
+  :empty="page.total === 0"
+  empty-variant="search"
+  empty-title="没有匹配的企业"
+  empty-primary-text="清空筛选"
+  :total="page.total"
+  v-model:page="pageNo"
+  v-model:page-size="pageSize"
+  @empty-primary="reset"
+>
+  <template #filters>
+    <a-input v-model:value="keyword" placeholder="企业名称" allow-clear />
+  </template>
+  <template #extra>
+    <a-button type="primary">新建</a-button>
+  </template>
+  <a-table :columns="columns" :data-source="page.items" :pagination="false" row-key="id" />
+</ListPageShell>
+```
+
+`v-model:page` 和 `v-model:page-size` 对应分页。`empty` 为真时展示空态并藏起分页。想整块换掉空态，用 `empty` 插槽。
+
+```vue
+<DetailPageShell title="星澜智造科技有限公司" back-text="返回列表" @back="back">
+  <template #extra>
+    <a-button type="primary">编辑</a-button>
+  </template>
+  <template #meta>
+    <a-tag>在园</a-tag>
+  </template>
+  <DetailSection title="工商信息">
+    <a-descriptions :column="2" bordered>...</a-descriptions>
+  </DetailSection>
+</DetailPageShell>
+```
+
+```vue
+<FormPageShell title="入园申请" :submitting="submitting" @submit="onSubmit" @cancel="back">
+  <a-form layout="vertical" :model="formState">...</a-form>
+</FormPageShell>
+```
+
+`FormPageShell` 的按钮只抛 `submit` 和 `cancel`，不包一层 `Form`，校验留在页面里。`sticky` 默认 true，操作条吸在底部。用 `actions` 插槽可以换掉这两个按钮。
+
+### 动效
+
+```ts
+import { parkMotion } from '@park/theme'
+import '@park/theme/motion.css'
+```
+
+已经引用 `@park/components/style.css` 时，可以不重复引 `motion.css`。系统开了「减少动态效果」时，过渡和入场动画会停掉，当前项的高亮还在。
+
+| 名称 | 类名 | 用法 |
+| --- | --- | --- |
+| `parkMotion.routeFade` | `park-route-fade` | 淡入并轻微位移。交给 `RouteMotion` |
+| `parkMotion.routeSlide` | `park-route-slide` | 左右侧滑。交给 `RouteMotion` |
+| `parkMotion.list` | `park-list` | `ListMotion` 使用的 TransitionGroup 名称 |
+| `parkMotion.menuPulse` | `park-menu-pulse` | 加在菜单项上。选中态再加 `is-current`，或依赖 `ant-menu-item-selected` |
+| `parkMotion.row` | `park-row` | 表格行 class，入场时错开出现 |
+
+```vue
+<RouterView v-slot="{ Component, route }">
+  <RouteMotion :name="parkMotion.routeFade">
+    <component :is="Component" :key="route.path" />
+  </RouteMotion>
+</RouterView>
+
+<ListMotion tag="ul">
+  <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+</ListMotion>
+
+<a-menu-item class="park-menu-pulse">工作台</a-menu-item>
+```
+
+`RouteMotion` 使用 `mode="out-in"`。直接写 `<Transition>` 时，`name` 用上表的类名即可。
 
 ### 登录壳
 
@@ -128,17 +249,26 @@ import {
   getCurrentUser,
   getParkOverview,
   getRememberedUsername,
+  getWorkOrder,
   isAuthenticated,
+  listFixtures,
   login,
   logout,
   mockQuery,
   parks,
   queryBuildings,
   queryEnterprises,
+  queryNotices,
+  queryVisits,
+  queryWorkOrders,
 } from '@park/mock'
 
 const page = queryEnterprises({ parkId: 'park-binjiang', status: '在园', page: 1, pageSize: 10 })
 const overview = getParkOverview('park-binjiang')
+const orders = queryWorkOrders({ parkId: 'park-binjiang', status: '处理中', page: 1, pageSize: 10 })
+const notices = queryNotices({ keyword: '门禁', status: '已发布' })
+const visits = queryVisits({ parkId: 'park-binjiang', status: '待审核' })
+const oneOrder = getWorkOrder('wo-bj-ac')
 const pending = mockQuery(page)
 
 const session = await login('admin', 'admin123', { remember: true })
@@ -149,6 +279,16 @@ logout()
 ```
 
 内置三个园区：滨江云栖科创园、临港智造产业园、光谷生命科学园，以及对应企业和楼宇。统一社会信用代码和电话都是虚构的。`mockQuery` 只是加一点延迟，方便先接异步界面。
+
+D3 另有三组通用列表，同样是虚构数据，挂在 `listFixtures` 上，也有单独的查询函数：
+
+| 数据 | 查询 | 说明 |
+| --- | --- | --- |
+| `notices` | `queryNotices` / `getNotice` | 公告。级别普通 / 重要 / 紧急，状态已发布 / 草稿 |
+| `workOrders` | `queryWorkOrders` / `getWorkOrder` | 服务工单。优先级、状态、位置 |
+| `visits` | `queryVisits` / `getVisit` | 来访预约。访客、单位、事由、车牌 |
+
+查询参数都是可选的 `parkId`、`keyword`、状态，以及 `page` / `pageSize`。关键字匹配标题、处理人、单位等文本字段。没有命中时 `total` 为 0，方便直接接空态。
 
 演示账号同样是虚构的，口令写在源码里，只给原型用：
 
