@@ -1,0 +1,31 @@
+{
+  "name": "@park/mock",
+  "version": "0.1.0",
+  "description": "园区样例主数据、通用列表示例、大屏看板示例、查询辅助，以及登录会话模拟。",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxhcode/park-shared.git",
+    "directory": "packages/mock"
+  }
+}
