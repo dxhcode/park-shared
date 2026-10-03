@@ -1,7 +1,7 @@
 {
   "name": "@park/theme",
   "version": "0.1.0",
-  "description": "园区管理端与大屏主题：CSS 变量、ant-design-vue 设计令牌与轻量动效。",
+  "description": "园区管理端与大屏主题：CSS 变量、ant-design-vue 设计令牌、轻量动效与大屏图表 option。",
   "type": "module",
   "files": [
     "dist",

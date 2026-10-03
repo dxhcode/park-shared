@@ -151,3 +151,87 @@ export interface VisitQuery {
   page?: number
   pageSize?: number
 }
+
+export type DashboardKpiCode =
+  | 'settled'
+  | 'occupancy'
+  | 'onsite'
+  | 'energyLoad'
+  | 'appointments'
+  | 'openAlerts'
+
+export interface DashboardKpi {
+  id: string
+  parkId: string
+  code: DashboardKpiCode
+  label: string
+  value: number
+  unit: string
+  trend?: number
+  hint?: string
+}
+
+export type AlertLevel = '提示' | '预警' | '告警'
+
+export interface AlertTickerItem {
+  id: string
+  parkId: string
+  level: AlertLevel
+  title: string
+  location: string
+  time: string
+  sourceId?: string
+}
+
+export type ChartMetric = '能耗' | '人流' | '产值' | '产业'
+
+export interface ChartPointSeries {
+  name: string
+  data: number[]
+}
+
+export interface ChartSeriesSample {
+  id: string
+  parkId: string
+  metric: ChartMetric
+  name: string
+  unit: string
+  categories: string[]
+  series: ChartPointSeries[]
+}
+
+export interface ParkMapMarker {
+  id: string
+  parkId: string
+  name: string
+  shortName: string
+  city: string
+  /** 示意底图上的横向位置，0–100。 */
+  x: number
+  /** 示意底图上的纵向位置，0–100。 */
+  y: number
+  status: ParkStatus
+}
+
+export interface DashboardKpiQuery {
+  parkId?: string
+  code?: DashboardKpiCode
+}
+
+export interface AlertTickerQuery {
+  parkId?: string
+  level?: AlertLevel
+}
+
+export interface ChartSeriesQuery {
+  parkId?: string
+  metric?: ChartMetric
+}
+
+export interface ParkDashboard {
+  park: Park
+  kpis: DashboardKpi[]
+  alerts: AlertTickerItem[]
+  charts: ChartSeriesSample[]
+  marker?: ParkMapMarker
+}

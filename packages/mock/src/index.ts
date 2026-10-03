@@ -22,9 +22,35 @@ export type {
   Visit,
   VisitStatus,
   VisitQuery,
+  DashboardKpi,
+  DashboardKpiCode,
+  DashboardKpiQuery,
+  AlertTickerItem,
+  AlertLevel,
+  AlertTickerQuery,
+  ChartMetric,
+  ChartPointSeries,
+  ChartSeriesSample,
+  ChartSeriesQuery,
+  ParkMapMarker,
+  ParkDashboard,
 } from './types.js'
 export { parks, enterprises, buildings, mockMeta } from './data.js'
 export { queryNotices, queryWorkOrders, queryVisits, getNotice, getWorkOrder, getVisit } from './fixtures-query.js'
+export {
+  dashboardKpis,
+  alertTickerItems,
+  chartSeries,
+  mapMarkers,
+  dashboardFixtures,
+  queryDashboardKpis,
+  queryAlertTicker,
+  queryChartSeries,
+  getChartSeries,
+  getParkDashboard,
+} from './dashboard.js'
+export type { DemoLink } from './link.js'
+export { buildDemoSearch, parseDemoSearch, buildDemoHash, parseDemoHash } from './link.js'
 export { getById, filterByParkId, searchByFields, paginate, mockQuery } from './helpers.js'
 export { queryEnterprises, queryBuildings, getParkOverview } from './query.js'
 export type {

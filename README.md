@@ -1,22 +1,23 @@
 # park-shared
 
-园区平台的共享前端库。`park-industry`、`park-campus`、`park-gov` 从这里拿主题、组件、登录壳、布局壳、页面壳和模拟数据。各端自己的菜单、页面和真实接口仍留在各自仓库。
+园区平台的共享前端库。`park-industry`、`park-campus`、`park-gov` 从这里拿主题、组件、登录壳、布局壳、页面壳、大屏看板积木和模拟数据。各端自己的菜单、页面和真实接口仍留在各自仓库。
 
 ## 进度
 
 - D1：主题、基础组件、园区主数据
 - D2（2026-10-02）：登录壳、布局壳、本地鉴权模拟
 - D3（2026-10-03）：空态变体、列表 / 详情 / 表单页面壳、页面动效，以及公告、工单、来访列表示例
+- D4（2026-10-04）：大屏跑马灯、动画指标、图表壳、示意地图，以及看板模拟数据
 
 ## 包
 
 | 包 | 内容 |
 | --- | --- |
-| `@park/theme` | 管理端 / 大屏 CSS 变量、ant-design-vue 4 的 `ThemeConfig`，以及 `motion.css` |
-| `@park/components` | 页头、指标、空态、页面壳，加上 `LoginForm` / `LoginPage`、`AdminLayout`、`ScreenLayout` |
-| `@park/mock` | 园区、企业、楼宇，以及公告 / 工单 / 来访；分页与搜索；演示账号和本地会话 |
+| `@park/theme` | 管理端 / 大屏 CSS 变量、ant-design-vue 4 的 `ThemeConfig`、`motion.css`，以及大屏 ECharts option |
+| `@park/components` | 页头、指标、空态、页面壳、登录壳、布局壳，加上大屏跑马灯、图表壳和示意地图 |
+| `@park/mock` | 园区、企业、楼宇、公告 / 工单 / 来访、大屏指标与曲线；分页与搜索；演示账号、本地会话和演示深链 |
 
-`playground` 是本地对照预览，不是平台应用。默认先走登录，进入布局壳后再退出。右上角可切到「组件对照」或「页面壳」。
+`playground` 是本地对照预览，不是平台应用。默认先走登录，进入布局壳后再退出。右上角可切到「组件对照」「页面壳」或「大屏看板」。地址栏可用 `?view=screen&park=park-binjiang`。
 
 ## 本地命令
 
@@ -70,15 +71,20 @@ import {
   FormPageShell,
   GlassCard,
   KpiStat,
+  ChartPanel,
+  KpiTicker,
   ListMotion,
   ListPageShell,
   LoginForm,
   LoginPage,
+  MapPanel,
   PageHeader,
   RouteMotion,
+  ScreenChart,
+  ScreenKpi,
   ScreenLayout,
 } from '@park/components'
-import type { EmptyTone, EmptyVariant, LoginPayload } from '@park/components'
+import type { EmptyTone, EmptyVariant, LoginPayload, MapMarker, TickerItem } from '@park/components'
 ```
 
 记得同时引入 `@park/components/style.css`。默认文案是中文，例如空态「暂无数据」、登录按钮「进入工作台」。`@park/components` 把 `vue` 和 `ant-design-vue` 视为 peer。动效类名已经打进这份 `style.css`；只想要 CSS 时也可以单独引 `@park/theme/motion.css`。
@@ -100,6 +106,11 @@ import type { EmptyTone, EmptyVariant, LoginPayload } from '@park/components'
 | `LoginPage` | 深色入口加玻璃卡片，内部放着 `LoginForm` |
 | `AdminLayout` | 管理端壳：侧栏、顶栏、内容插槽。底色走主题变量 |
 | `ScreenLayout` | 大屏壳：顶栏和内容插槽，自带 `data-park-theme="screen"` |
+| `KpiTicker` | 玻璃跑马灯。指标或告警条目横向滚动，悬停暂停 |
+| `ScreenKpi` | 大屏指标。数字滚入，左侧光点脉冲 |
+| `ChartPanel` | 玻璃图表壳。标题、说明、画布插槽，边框沿用 `GlassCard` 辉光 |
+| `ScreenChart` | 不依赖图表库的折线 / 柱状 / 环形图，给预览和大屏兜底 |
+| `MapPanel` | 三园示意地图。点击点位抛出 `select`，不接地图密钥 |
 
 ### 空态
 
@@ -239,6 +250,43 @@ import '@park/theme/motion.css'
 
 `ScreenLayout` 适合大屏仓库套一层顶栏。`fill` 默认铺满视口；嵌进别的布局时设 `:fill="false"`。
 
+### 大屏看板
+
+这些积木按 `data-park-theme="screen"` 来做青辉光和玻璃底。管理端令牌不动。`ChartPanel` 只提供外壳，平台自己把 ECharts 画布放进默认插槽。没有装 ECharts 时，可以用 `ScreenChart` 先把曲线画出来。
+
+```vue
+<KpiTicker :items="alerts" label="告警滚动" />
+
+<ChartPanel title="近七日能耗" caption="单位 kWh" :height="200">
+  <template #extra>可交给 ECharts</template>
+  <ScreenChart kind="line" :categories="energy.categories" :series="energy.series" />
+</ChartPanel>
+
+<MapPanel :markers="markers" :active-id="parkId" @select="parkId = $event" />
+
+<ScreenKpi label="在园企业" :value="2" unit="家" :trend="4.2" hint="较上月" />
+```
+
+`KpiTicker` 的 `items` 是 `TickerItem`：`id`、`label`，可选 `value`、`unit`、`time`、`level`（`指标` / `提示` / `预警` / `告警`）。`duration` 是一整圈的秒数。系统开了「减少动态效果」时停掉滚动，改成普通换行。
+
+`ScreenKpi` 的 `value` 是数字。`countUp` 默认从 0 滚到当前值，再次变化时从上一个值接着滚。`decimals` 控制小数位。`pulse` 控制左侧光点。
+
+`MapPanel` 的 `markers` 是 `MapMarker`。`x` / `y` 是示意底图上的百分比。`select` 抛出被点中的 `id`。底图是虚构的滨江云栖、临港智造、光谷生命，不是测绘地图。
+
+`@park/theme` 另外导出三份 option，字段按 ECharts 的 `setOption` 来写，本仓库不安装 ECharts：
+
+```ts
+import { screenBarOption, screenLineOption, screenPieOption } from '@park/theme'
+
+const line = screenLineOption(energy.categories, energy.series)
+const bar = screenBarOption(flow.categories, flow.series)
+const pie = screenPieOption(industry.categories.map((name, index) => ({
+  name,
+  value: industry.series[0]?.data[index] ?? 0,
+})))
+// chart.setOption(line)
+```
+
 ## 模拟数据与登录会话
 
 ```ts
@@ -246,7 +294,10 @@ import {
   buildings,
   demoCredentials,
   enterprises,
+  buildDemoHash,
+  buildDemoSearch,
   getCurrentUser,
+  getParkDashboard,
   getParkOverview,
   getRememberedUsername,
   getWorkOrder,
@@ -256,7 +307,12 @@ import {
   logout,
   mockQuery,
   parks,
+  parseDemoHash,
+  parseDemoSearch,
+  queryAlertTicker,
   queryBuildings,
+  queryChartSeries,
+  queryDashboardKpis,
   queryEnterprises,
   queryNotices,
   queryVisits,
@@ -289,6 +345,34 @@ D3 另有三组通用列表，同样是虚构数据，挂在 `listFixtures` 上�
 | `visits` | `queryVisits` / `getVisit` | 来访预约。访客、单位、事由、车牌 |
 
 查询参数都是可选的 `parkId`、`keyword`、状态，以及 `page` / `pageSize`。关键字匹配标题、处理人、单位等文本字段。没有命中时 `total` 为 0，方便直接接空态。
+
+D4 的看板数据挂在 `dashboardFixtures` 上。在园企业数、入驻率、未关闭告警、2026-10-04 的预约，以及产业从业人数，都跟上面的园区 / 企业 / 工单 / 来访对齐。在岗人数、能耗负荷、人流和产值是原型运行数。
+
+| 数据 | 查询 | 说明 |
+| --- | --- | --- |
+| `dashboardKpis` | `queryDashboardKpis` / `getParkDashboard` | 六个指标：在园企业、入驻率、在岗、负荷、今日预约、未关闭告警 |
+| `alertTickerItems` | `queryAlertTicker` | 跑马灯。级别提示 / 预警 / 告警，`sourceId` 指向工单或公告 |
+| `chartSeries` | `queryChartSeries` / `getChartSeries` | 能耗、人流、产值、产业。`metric` 用这四个中文名 |
+| `mapMarkers` | `getParkDashboard(id).marker` | 三园示意坐标，自西向东 |
+
+```ts
+const board = getParkDashboard('park-binjiang')
+const alerts = queryAlertTicker({ parkId: 'park-binjiang', level: '告警' })
+const energy = queryChartSeries({ parkId: 'park-binjiang', metric: '能耗' })[0]
+```
+
+`getParkDashboard` 在园区不存在时返回 `undefined`。
+
+演示页如果要在地址栏记住视图和园区，用这四个函数，不引入路由：
+
+```ts
+const search = buildDemoSearch({ view: 'screen', parkId: 'park-lingang' }, window.location.search)
+const hash = buildDemoHash({ view: 'screen', parkId: 'park-lingang', focus: 'map' })
+parseDemoSearch(search).parkId
+parseDemoHash('#screen/park-lingang/map').focus
+```
+
+`buildDemoSearch` 只改传入的字段。空字符串会删掉该参数，没传的字段留在原来的 query 里。锚点格式是 `#视图/园区/焦点`；锚点里带 `=` 时按 query 解析。
 
 演示账号同样是虚构的，口令写在源码里，只给原型用：
 

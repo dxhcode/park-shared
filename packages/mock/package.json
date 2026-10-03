@@ -1,7 +1,7 @@
 {
   "name": "@park/mock",
   "version": "0.1.0",
-  "description": "园区样例主数据、通用列表示例、查询辅助，以及登录会话模拟。",
+  "description": "园区样例主数据、通用列表示例、大屏看板示例、查询辅助，以及登录会话模拟。",
   "type": "module",
   "files": [
     "dist"
