@@ -8,14 +8,15 @@
 - D2（2026-10-02）：登录壳、布局壳、本地鉴权模拟
 - D3（2026-10-03）：空态变体、列表 / 详情 / 表单页面壳、页面动效，以及公告、工单、来访列表示例
 - D4（2026-10-04）：大屏跑马灯、动画指标、图表壳、示意地图，以及看板模拟数据
+- D5（2026-10-04）：视觉令牌对齐、玻璃 / 墨色 / 骨架工具类，以及演示路线。用法见 [DEMO.md](./DEMO.md)，阶段一缺口见 [GAPS.md](./GAPS.md)
 
 ## 包
 
 | 包 | 内容 |
 | --- | --- |
-| `@park/theme` | 管理端 / 大屏 CSS 变量、ant-design-vue 4 的 `ThemeConfig`、`motion.css`，以及大屏 ECharts option |
+| `@park/theme` | 管理端 / 大屏 CSS 变量、ant-design-vue 4 的 `ThemeConfig`、`motion.css`、`surface.css`，以及大屏 ECharts option |
 | `@park/components` | 页头、指标、空态、页面壳、登录壳、布局壳，加上大屏跑马灯、图表壳和示意地图 |
-| `@park/mock` | 园区、企业、楼宇、公告 / 工单 / 来访、大屏指标与曲线；分页与搜索；演示账号、本地会话和演示深链 |
+| `@park/mock` | 园区、企业、楼宇、公告 / 工单 / 来访、大屏指标与曲线；分页与搜索；演示账号、本地会话、演示深链和讲解路线 |
 
 `playground` 是本地对照预览，不是平台应用。默认先走登录，进入布局壳后再退出。右上角可切到「组件对照」「页面壳」或「大屏看板」。地址栏可用 `?view=screen&park=park-binjiang`。
 
@@ -40,7 +41,9 @@ pnpm dev
 - **admin**：浅色内容区，靛蓝主色，顶栏和强调色用墨色，细金线做点缀。选择器是 `:root` 和 `[data-park-theme="admin"]`。
 - **screen**：深海军蓝底、青蓝辉光、玻璃拟态和发光描边。选择器是 `[data-park-theme="screen"]`，也可以加类名 `park-screen-bg`。
 
-组件读的是 `--park-color-*`、`--park-glass-*`、`--park-glow`、`--park-sider-bg`、`--park-header-bg` 这些 CSS 变量，不绑定某一端。
+组件读的是 `--park-color-*`、`--park-glass-*`、`--park-glow`、`--park-sider-bg`、`--park-header-bg`、`--park-trend-*`、`--park-ink` 这些 CSS 变量，不绑定某一端。图表色是 `--park-chart-1` 到 `--park-chart-6`：管理端偏靛蓝和金，大屏偏青蓝。
+
+`parkSurface` 对应 `surface.css` 里的类名，可直接加在各端自己的节点上：`park-glass-surface`、`park-glass-glow`、`park-ink-panel`、`park-accent-line`，以及 `park-skeleton`、`park-skeleton-kpi`、`park-skeleton-chart`。`theme.css` 会带上这份样式；组件包的 `style.css` 里也有。`KpiStat`、`ScreenKpi`、`ChartPanel` 另有 `loading`，为真时用同一套骨架。
 
 管理端入口示例：
 
@@ -373,6 +376,8 @@ parseDemoHash('#screen/park-lingang/map').focus
 ```
 
 `buildDemoSearch` 只改传入的字段。空字符串会删掉该参数，没传的字段留在原来的 query 里。锚点格式是 `#视图/园区/焦点`；锚点里带 `=` 时按 query 解析。
+
+整段讲解用 `demoBeats`、`demoStory.beatsFor(...)`、`demoJump` / `demoBeatJump` 和 `demoParkSnapshot`。平台视图名和记录 id 见 [DEMO.md](./DEMO.md)。
 
 演示账号同样是虚构的，口令写在源码里，只给原型用：
 

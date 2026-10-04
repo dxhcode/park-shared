@@ -10,6 +10,8 @@ const props = defineProps<{
   /** 环比百分比。正数上升，负数下降，不传则不展示。 */
   trend?: number
   hint?: string
+  /** 用骨架代替数字，适合接口尚未返回时。 */
+  loading?: boolean
 }>()
 
 const trendText = computed(() => {
@@ -26,13 +28,19 @@ const trendClass = computed(() => {
 
 <template>
   <article class="park-kpi">
-    <p class="park-kpi__label">{{ label }}</p>
-    <p class="park-kpi__value">
-      <span>{{ value }}</span>
-      <small v-if="unit">{{ unit }}</small>
-    </p>
-    <p v-if="trend !== undefined" class="park-kpi__trend" :class="trendClass">{{ trendText }}</p>
-    <p v-if="hint" class="park-kpi__hint">{{ hint }}</p>
+    <div v-if="loading" class="park-skeleton-kpi" role="status" aria-label="指标加载中">
+      <span class="park-skeleton park-skeleton-line" />
+      <span class="park-skeleton park-skeleton-value" />
+    </div>
+    <template v-else>
+      <p class="park-kpi__label">{{ label }}</p>
+      <p class="park-kpi__value">
+        <span>{{ value }}</span>
+        <small v-if="unit">{{ unit }}</small>
+      </p>
+      <p v-if="trend !== undefined" class="park-kpi__trend" :class="trendClass">{{ trendText }}</p>
+      <p v-if="hint" class="park-kpi__hint">{{ hint }}</p>
+    </template>
   </article>
 </template>
 
@@ -79,11 +87,11 @@ const trendClass = computed(() => {
 }
 
 .park-kpi__trend.is-up {
-  color: #15936a;
+  color: var(--park-trend-up, #15936a);
 }
 
 .park-kpi__trend.is-down {
-  color: #d4384b;
+  color: var(--park-trend-down, #d4384b);
 }
 
 .park-kpi__trend.is-flat {
@@ -107,13 +115,4 @@ const trendClass = computed(() => {
   filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.35));
 }
 
-[data-park-theme='screen'] .park-kpi__trend.is-up,
-.park-screen-bg .park-kpi__trend.is-up {
-  color: #5eead4;
-}
-
-[data-park-theme='screen'] .park-kpi__trend.is-down,
-.park-screen-bg .park-kpi__trend.is-down {
-  color: #fb7185;
-}
 </style>

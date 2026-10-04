@@ -110,24 +110,5 @@ withDefaults(
 </style>
 
 <style>
-@media (prefers-reduced-motion: no-preference) {
-  [data-park-theme='screen'] .park-glass.is-glow,
-  .park-screen-bg .park-glass.is-glow {
-    animation: park-glass-pulse 4.8s ease-in-out infinite;
-  }
-}
-
-@keyframes park-glass-pulse {
-  0%,
-  100% {
-    box-shadow:
-      var(--park-shadow),
-      0 0 16px rgba(34, 211, 238, 0.16);
-  }
-  50% {
-    box-shadow:
-      var(--park-shadow),
-      0 0 28px rgba(56, 189, 248, 0.42);
-  }
-}
+@import '../../../theme/src/surface.css';
 </style>

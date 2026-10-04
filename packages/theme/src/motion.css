@@ -131,6 +131,11 @@
   .ant-menu-item-selected.park-menu-pulse {
     animation: park-menu-pulse 900ms cubic-bezier(0.22, 1, 0.36, 1);
   }
+
+  .park-float,
+  .park-empty__mark {
+    animation: park-empty-float 3.6s ease-in-out infinite;
+  }
 }
 
 @keyframes park-row-in {
@@ -142,6 +147,17 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes park-empty-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
   }
 }
 

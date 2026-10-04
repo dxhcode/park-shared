@@ -3,7 +3,10 @@
  * 管理端：:root 与 [data-park-theme="admin"]，浅底 + 墨色点缀。
  * 大屏： [data-park-theme="screen"] 或 .park-screen-bg，深海军蓝 + 青辉光 + 玻璃。
  * 使用：import '@park/theme/theme.css'，再调用 applyParkTheme('admin' | 'screen')。
+ * 玻璃、墨色条和骨架类在 surface.css，随本文件一起引入。
  */
+
+@import './surface.css';
 
 :root,
 [data-park-theme='admin'] {
@@ -17,6 +20,18 @@
   --park-color-text-secondary: #5c6578;
   --park-color-border: rgba(14, 19, 32, 0.12);
   --park-color-glow: transparent;
+  --park-trend-up: #15936a;
+  --park-trend-down: #d4384b;
+  --park-accent-line: #c6a15b;
+  --park-ink: #0e1320;
+  --park-skeleton-base: rgba(14, 19, 32, 0.07);
+  --park-skeleton-shine: rgba(255, 255, 255, 0.78);
+  --park-chart-1: #1d39c4;
+  --park-chart-2: #2f54eb;
+  --park-chart-3: #c6a15b;
+  --park-chart-4: #08979c;
+  --park-chart-5: #722ed1;
+  --park-chart-6: #d4384b;
   --park-header-bg: #0e1320;
   --park-header-text: #f4f7ff;
   --park-sider-bg: #141a2a;
@@ -47,6 +62,18 @@
   --park-color-text-secondary: #8fb4d6;
   --park-color-border: rgba(94, 234, 255, 0.35);
   --park-color-glow: rgba(34, 211, 238, 0.45);
+  --park-trend-up: #5eead4;
+  --park-trend-down: #fb7185;
+  --park-accent-line: #22d3ee;
+  --park-ink: #070d1c;
+  --park-skeleton-base: rgba(34, 211, 238, 0.1);
+  --park-skeleton-shine: rgba(103, 232, 249, 0.28);
+  --park-chart-1: #22d3ee;
+  --park-chart-2: #60a5fa;
+  --park-chart-3: #c4b5fd;
+  --park-chart-4: #5eead4;
+  --park-chart-5: #fbbf24;
+  --park-chart-6: #fb7185;
   --park-header-bg: rgba(5, 10, 24, 0.82);
   --park-header-text: #e7f6ff;
   --park-sider-bg: rgba(8, 14, 32, 0.92);

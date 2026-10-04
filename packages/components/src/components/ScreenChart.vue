@@ -30,7 +30,9 @@ const pad = { l: 42, r: 10, t: 12, b: 26 }
 const ariaLabel = computed(() => props.label || (props.kind === 'donut' ? '环形图' : props.kind === 'bar' ? '柱状图' : '折线图'))
 
 function colorAt(index: number) {
-  return palette[index % palette.length] ?? palette[0]
+  const fallback = palette[index % palette.length] ?? palette[0]
+  const slot = (index % palette.length) + 1
+  return `var(--park-chart-${slot}, ${fallback})`
 }
 
 function compact(value: number) {
@@ -139,7 +141,7 @@ const plot = computed(() => {
   <div class="park-screen-chart" :class="`is-${kind}`">
     <ul v-if="kind !== 'donut' && series.length > 1" class="park-screen-chart__legend">
       <li v-for="(item, index) in series" :key="item.name">
-        <i :style="{ background: palette[index % palette.length] }" />
+        <i :style="{ background: colorAt(index) }" />
         {{ item.name }}
       </li>
     </ul>

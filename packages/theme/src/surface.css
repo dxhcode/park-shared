@@ -1,0 +1,121 @@
+/*
+ * 玻璃、墨色点缀、图表 / 指标骨架。
+ * 由 theme.css 引入，组件包的 style.css 也会打进同一份规则。
+ * 类名见 parkSurface。
+ */
+
+.park-glass-surface {
+  position: relative;
+  border-radius: var(--park-radius-lg, 16px);
+  background: var(--park-glass-bg, #fff);
+  border: 1px solid var(--park-glass-border, rgba(14, 19, 32, 0.08));
+  box-shadow: var(--park-shadow, 0 14px 40px rgba(14, 19, 32, 0.08));
+  backdrop-filter: blur(var(--park-glass-blur, 14px));
+  -webkit-backdrop-filter: blur(var(--park-glass-blur, 14px));
+}
+
+.park-glass-glow {
+  box-shadow:
+    var(--park-shadow, 0 14px 40px rgba(14, 19, 32, 0.08)),
+    var(--park-glow, none);
+}
+
+.park-ink-panel {
+  color: var(--park-header-text, #f4f7ff);
+  background:
+    radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--park-accent-line, #c6a15b) 28%, transparent), transparent 46%),
+    var(--park-ink, #0e1320);
+  border-radius: var(--park-radius-lg, 16px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--park-accent-line, #c6a15b) 45%, transparent),
+    0 16px 40px rgba(14, 19, 32, 0.18);
+}
+
+.park-accent-line {
+  display: block;
+  height: 2px;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--park-accent-line, #c6a15b), transparent 82%);
+}
+
+.park-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--park-radius, 10px);
+  background: var(--park-skeleton-base, rgba(14, 19, 32, 0.06));
+}
+
+.park-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--park-skeleton-shine, rgba(255, 255, 255, 0.72)), transparent);
+}
+
+.park-skeleton-kpi {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-height: 72px;
+}
+
+.park-skeleton-line,
+.park-skeleton-value,
+.park-skeleton-chart {
+  display: block;
+}
+
+.park-skeleton-line {
+  height: 12px;
+  width: 46%;
+}
+
+.park-skeleton-value {
+  height: 28px;
+  width: 62%;
+}
+
+.park-skeleton-chart {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .park-skeleton::after {
+    animation: park-skeleton-shine 1.4s ease-in-out infinite;
+  }
+
+  [data-park-theme='screen'] .park-glass.is-glow,
+  .park-screen-bg .park-glass.is-glow,
+  [data-park-theme='screen'] .park-glass-glow,
+  .park-screen-bg .park-glass-glow {
+    animation: park-glass-pulse 4.8s ease-in-out infinite;
+  }
+}
+
+@keyframes park-skeleton-shine {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes park-glass-pulse {
+  0%,
+  100% {
+    box-shadow:
+      var(--park-shadow),
+      0 0 16px rgba(34, 211, 238, 0.16);
+  }
+
+  50% {
+    box-shadow:
+      var(--park-shadow),
+      0 0 28px rgba(56, 189, 248, 0.42);
+  }
+}

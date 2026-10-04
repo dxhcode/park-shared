@@ -15,6 +15,12 @@ import {
   buildDemoHash,
   buildDemoSearch,
   getChartSeries,
+  demoBeatJump,
+  demoBeats,
+  demoJump,
+  demoPlatforms,
+  demoParkSnapshot,
+  demoStory,
   getParkDashboard,
   mapMarkers,
   parseDemoHash,
@@ -29,9 +35,12 @@ import {
 } from '../packages/mock/dist/index.js'
 import {
   adminAntdTheme,
+  adminTokens,
   applyParkTheme,
   parkMotion,
+  parkSurface,
   screenAntdTheme,
+  screenTokens,
   screenBarOption,
   screenLineOption,
   screenPieOption,
@@ -122,6 +131,13 @@ assert.equal(parkMotion.routeSlide, 'park-route-slide')
 assert.equal(parkMotion.list, 'park-list')
 assert.equal(parkMotion.menuPulse, 'park-menu-pulse')
 assert.equal(parkMotion.row, 'park-row')
+assert.equal(parkMotion.float, 'park-float')
+assert.equal(parkSurface.glass, 'park-glass-surface')
+assert.equal(parkSurface.skeletonChart, 'park-skeleton-chart')
+assert.equal(adminTokens.trendUp, '#15936a')
+assert.equal(adminTokens.ink, '#0e1320')
+assert.equal(screenTokens.trendUp, '#5eead4')
+assert.equal(screenTokens.accentLine, '#22d3ee')
 
 assert.equal(demoCredentials.length, 2)
 assert.equal(demoCredentials[0]?.roleLabel, '园区管理员')
@@ -164,6 +180,17 @@ assert.match(motionCss, /\.park-route-slide-enter-from/)
 assert.match(motionCss, /\.park-list-enter-active/)
 assert.match(motionCss, /\.park-menu-pulse/)
 assert.match(motionCss, /\.park-row/)
+assert.match(motionCss, /park-empty-float/)
+assert.match(motionCss, /\.park-float/)
+const themeCss = readFileSync(new URL('../packages/theme/src/theme.css', import.meta.url), 'utf8')
+assert.match(themeCss, /@import '\.\/surface.css'/)
+assert.match(themeCss, /--park-trend-up:\s*#15936a/)
+assert.match(themeCss, /--park-chart-1:\s*#22d3ee/)
+const surfaceCss = readFileSync(new URL('../packages/theme/src/surface.css', import.meta.url), 'utf8')
+assert.match(surfaceCss, /\.park-glass-surface/)
+assert.match(surfaceCss, /\.park-ink-panel/)
+assert.match(surfaceCss, /\.park-skeleton-chart/)
+assert.match(surfaceCss, /park-skeleton-shine/)
 const componentCss = readFileSync(new URL('../packages/components/dist/style.css', import.meta.url), 'utf8')
 assert.match(componentCss, /\.park-route-fade-enter-active/)
 assert.match(componentCss, /\.park-empty/)
@@ -171,6 +198,8 @@ assert.match(componentCss, /\.park-ticker/)
 assert.match(componentCss, /\.park-screen-kpi/)
 assert.match(componentCss, /\.park-chart-panel/)
 assert.match(componentCss, /\.park-screen-chart/)
+assert.match(componentCss, /\.park-skeleton/)
+assert.match(componentCss, /\.park-glass-surface/)
 assert.match(componentCss, /\.park-map__pin/)
 assert.equal(existsSync(new URL('../packages/components/dist/style.css', import.meta.url)), true)
 
@@ -246,5 +275,31 @@ assert.equal(parseDemoHash(hash).focus, 'map')
 assert.equal(parseDemoHash(hash).parkId, 'park-lingang')
 assert.equal(parseDemoHash('#view=screen&park=park-guanggu').parkId, 'park-guanggu')
 assert.equal(parseDemoHash('').view, undefined)
+
+assert.equal(demoBeats.length, 13)
+assert.equal(demoPlatforms.length, 3)
+const industryBeats = demoStory.beatsFor('industry')
+assert.equal(industryBeats.some((beat) => beat.id === 'login-admin'), true)
+assert.equal(industryBeats.some((beat) => beat.id === 'industry-detail'), true)
+assert.equal(industryBeats.some((beat) => beat.platform === 'campus'), false)
+const detail = demoBeats.find((beat) => beat.id === 'industry-detail')
+assert.ok(detail)
+assert.equal(detail.recordId, 'ent-xinglan')
+assert.equal(detail?.cue.includes('星澜智造'), true)
+const jumped = demoBeatJump(detail)
+assert.equal(jumped.hash, '#enterprise/park-binjiang/detail')
+assert.equal(parseDemoSearch(jumped.search).view, 'enterprise')
+const direct = demoJump({ view: 'screen', parkId: 'park-lingang', focus: 'map' }, '?extra=1')
+assert.equal(direct.hash, '#screen/park-lingang/map')
+assert.equal(direct.search.includes('extra=1'), true)
+assert.equal(direct.search.includes('focus=map'), true)
+const snapshot = demoParkSnapshot('park-binjiang')
+assert.ok(snapshot)
+assert.equal(snapshot.park.name, '滨江云栖科创园')
+assert.equal(snapshot.enterprises.some((item) => item.id === 'ent-xinglan'), true)
+assert.equal(snapshot.workOrders.some((item) => item.id === 'wo-bj-ac'), true)
+assert.equal(snapshot.dashboard.kpis.length, 6)
+assert.equal(demoParkSnapshot('missing'), undefined)
+assert.equal(demoStory.platforms.map((item) => item.repo).join(','), 'park-industry,park-campus,park-gov')
 
 console.log('smoke ok')

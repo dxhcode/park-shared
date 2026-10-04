@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Button, ConfigProvider, Table, Tag } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { adminAntdTheme, screenAntdTheme } from '@park/theme'
-import { AppLogo, EmptyState, GlassCard, KpiStat, PageHeader } from '@park/components'
+import { adminAntdTheme, parkSurface, screenAntdTheme } from '@park/theme'
+import { AppLogo, ChartPanel, EmptyState, GlassCard, KpiStat, PageHeader } from '@park/components'
 import { getParkOverview, queryBuildings, queryEnterprises } from '@park/mock'
+
+const showSkeleton = ref(true)
 
 const overview = computed(() => getParkOverview('park-binjiang'))
 const enterprises = queryEnterprises({ parkId: 'park-binjiang', status: '在园' })
@@ -26,6 +28,9 @@ const park = computed(() => overview.value?.park)
     <header>
       <h1>园区共享组件预览</h1>
       <p>左侧为管理端（浅底、墨色顶栏），右侧为大屏（深色玻璃与青辉光）。数据来自 @park/mock。</p>
+      <Button type="primary" @click="showSkeleton = !showSkeleton">
+        {{ showSkeleton ? '显示指标' : '显示骨架' }}
+      </Button>
     </header>
     <div class="preview-grid">
       <ConfigProvider :locale="zhCN" :theme="adminAntdTheme">
@@ -59,6 +64,12 @@ const park = computed(() => overview.value?.park)
                   row-key="id"
                   size="small"
                 />
+              </GlassCard>
+              <GlassCard title="加载占位" :glow="false">
+                <div class="kpi-grid">
+                  <KpiStat label="在园企业" :value="overview?.settledCount ?? 0" unit="家" :loading="showSkeleton" />
+                  <ChartPanel title="近七日能耗" :height="120" :loading="showSkeleton" />
+                </div>
               </GlassCard>
               <GlassCard title="无匹配结果" :glow="false">
                 <EmptyState
@@ -106,6 +117,12 @@ const park = computed(() => overview.value?.park)
                   </li>
                 </ul>
               </GlassCard>
+              <GlassCard title="加载占位">
+                <div class="kpi-grid">
+                  <KpiStat label="在园企业" :value="overview?.settledCount ?? 0" unit="家" :trend="4.2" :loading="showSkeleton" />
+                  <ChartPanel title="近七日能耗" caption="骨架与曲线共用画布高度" :height="120" :loading="showSkeleton" />
+                </div>
+              </GlassCard>
               <GlassCard title="空态">
                 <EmptyState variant="done" title="暂无告警" description="今日没有新的设备或能耗告警。" />
               </GlassCard>
@@ -114,5 +131,21 @@ const park = computed(() => overview.value?.park)
         </section>
       </ConfigProvider>
     </div>
+    <section class="visual-band">
+      <div class="visual-stage" data-park-theme="admin">
+        <div :class="[parkSurface.ink, 'visual-ink']">
+          <p>管理端墨色条</p>
+          <strong>靛蓝主色，金线收边</strong>
+          <i :class="parkSurface.accentLine" />
+        </div>
+      </div>
+      <div class="visual-stage" data-park-theme="screen">
+        <div :class="[parkSurface.glass, parkSurface.glassGlow, 'visual-glass']">
+          <p>大屏玻璃面</p>
+          <strong>青辉光与模糊底</strong>
+          <i :class="parkSurface.accentLine" />
+        </div>
+      </div>
+    </section>
   </div>
 </template>

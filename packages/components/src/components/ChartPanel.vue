@@ -10,9 +10,12 @@ const props = withDefaults(
     caption?: string
     /** 画布高度。数字按像素。 */
     height?: number | string
+    /** 用骨架占住画布，不渲染默认插槽。 */
+    loading?: boolean
   }>(),
   {
     height: 200,
+    loading: false,
   },
 )
 
@@ -27,7 +30,8 @@ const canvasStyle = computed(() => ({
       <slot name="extra" />
     </template>
     <div class="park-chart-panel__canvas" :style="canvasStyle">
-      <slot>
+      <div v-if="loading" class="park-skeleton park-skeleton-chart" role="status" aria-label="图表加载中" />
+      <slot v-else>
         <p class="park-chart-panel__empty">将图表画布放在这里</p>
       </slot>
     </div>

@@ -15,6 +15,8 @@ const props = withDefaults(
     countUp?: boolean
     /** 左侧光点脉冲。 */
     pulse?: boolean
+    /** 用骨架代替数字。 */
+    loading?: boolean
     duration?: number
     decimals?: number
   }>(),
@@ -84,14 +86,20 @@ onBeforeUnmount(stop)
 </script>
 
 <template>
-  <article class="park-screen-kpi" :class="{ 'is-pulse': pulse }">
-    <p class="park-screen-kpi__label">{{ label }}</p>
-    <p class="park-screen-kpi__value" :aria-label="aria">
-      <span>{{ text }}</span>
-      <small v-if="unit">{{ unit }}</small>
-    </p>
-    <p v-if="trend !== undefined" class="park-screen-kpi__trend" :class="trendClass">{{ trendText }}</p>
-    <p v-if="hint" class="park-screen-kpi__hint">{{ hint }}</p>
+  <article class="park-screen-kpi" :class="{ 'is-pulse': pulse && !loading }">
+    <div v-if="loading" class="park-skeleton-kpi" role="status" aria-label="指标加载中">
+      <span class="park-skeleton park-skeleton-line" />
+      <span class="park-skeleton park-skeleton-value" />
+    </div>
+    <template v-else>
+      <p class="park-screen-kpi__label">{{ label }}</p>
+      <p class="park-screen-kpi__value" :aria-label="aria">
+        <span>{{ text }}</span>
+        <small v-if="unit">{{ unit }}</small>
+      </p>
+      <p v-if="trend !== undefined" class="park-screen-kpi__trend" :class="trendClass">{{ trendText }}</p>
+      <p v-if="hint" class="park-screen-kpi__hint">{{ hint }}</p>
+    </template>
   </article>
 </template>
 
@@ -140,11 +148,11 @@ onBeforeUnmount(stop)
 }
 
 .park-screen-kpi__trend.is-up {
-  color: #15936a;
+  color: var(--park-trend-up, #5eead4);
 }
 
 .park-screen-kpi__trend.is-down {
-  color: #d4384b;
+  color: var(--park-trend-down, #fb7185);
 }
 
 .park-screen-kpi__trend.is-flat {
@@ -198,13 +206,4 @@ onBeforeUnmount(stop)
   filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.35));
 }
 
-[data-park-theme='screen'] .park-screen-kpi__trend.is-up,
-.park-screen-bg .park-screen-kpi__trend.is-up {
-  color: #5eead4;
-}
-
-[data-park-theme='screen'] .park-screen-kpi__trend.is-down,
-.park-screen-bg .park-screen-kpi__trend.is-down {
-  color: #fb7185;
-}
 </style>

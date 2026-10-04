@@ -51,6 +51,8 @@ export {
 } from './dashboard.js'
 export type { DemoLink } from './link.js'
 export { buildDemoSearch, parseDemoSearch, buildDemoHash, parseDemoHash } from './link.js'
+export type { DemoPlatform, DemoSurface, DemoPlatformProfile, DemoBeat, DemoParkSnapshot } from './story.js'
+export { demoPlatforms, demoBeats, demoStory, demoJump, demoBeatJump, demoParkSnapshot } from './story.js'
 export { getById, filterByParkId, searchByFields, paginate, mockQuery } from './helpers.js'
 export { queryEnterprises, queryBuildings, getParkOverview } from './query.js'
 export type {

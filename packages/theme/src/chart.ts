@@ -1,6 +1,10 @@
 import { screenTokens } from './tokens.js'
 
-/** 与大屏 SVG 图表共用的青蓝色板。对象可直接交给 echarts.setOption，本包不依赖 echarts。 */
+/**
+ * 与 theme.css 里大屏的 --park-chart-1 … --park-chart-6 一致。
+ * 对象可直接交给 echarts.setOption，本包不依赖 echarts。
+ * SVG 兜底图读取 CSS 变量，以便管理端换上靛蓝 / 金色板。
+ */
 export const screenChartPalette = ['#22d3ee', '#60a5fa', '#c4b5fd', '#5eead4', '#fbbf24', '#fb7185'] as const
 
 export interface ScreenSeriesInput {

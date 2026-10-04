@@ -186,6 +186,43 @@ body {
   color: #5c6578;
 }
 
+.preview-shell > header button {
+  margin-top: 14px;
+}
+
+.visual-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 1440px;
+  margin: 16px auto 0;
+}
+
+.visual-stage {
+  padding: 16px;
+  border-radius: 20px;
+}
+
+.visual-ink,
+.visual-glass {
+  min-height: 108px;
+  padding: 18px 20px;
+}
+
+.visual-ink p,
+.visual-glass p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+}
+
+.visual-ink strong,
+.visual-glass strong {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
 .preview-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -489,7 +526,8 @@ body {
 
 @media (max-width: 1080px) {
   .preview-grid,
-  .kpi-grid {
+  .kpi-grid,
+  .visual-band {
     grid-template-columns: 1fr;
   }
 

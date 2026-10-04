@@ -111,9 +111,9 @@ const emit = defineEmits<{
   gap: 8px;
   padding: 32px 20px;
   border-radius: var(--park-radius-lg, 16px);
-  border: 1px dashed rgba(14, 19, 32, 0.18);
-  background: #ffffff;
-  box-shadow: 0 10px 28px rgba(14, 19, 32, 0.05);
+  border: 1px dashed var(--park-color-border, rgba(14, 19, 32, 0.18));
+  background: var(--park-color-surface, #ffffff);
+  box-shadow: var(--park-shadow, 0 10px 28px rgba(14, 19, 32, 0.05));
 }
 
 .park-empty__mark {
@@ -123,10 +123,10 @@ const emit = defineEmits<{
   height: 84px;
   margin-bottom: 4px;
   border-radius: 50%;
-  background: #0e1320;
-  color: #f4f7ff;
+  background: var(--park-ink, #0e1320);
+  color: var(--park-header-text, #f4f7ff);
   box-shadow:
-    0 0 0 4px rgba(198, 161, 91, 0.38),
+    0 0 0 4px color-mix(in srgb, var(--park-accent-line, #c6a15b) 55%, transparent),
     0 12px 24px rgba(14, 19, 32, 0.16);
 }
 
