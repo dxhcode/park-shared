@@ -4,7 +4,7 @@
 
 三个平台用 GitHub Pages 从 `dist` 分支发布静态站点。共享库没有管理端或大屏应用，本地用 `playground` 对照主题和组件。
 
-本目录集中存放说明。campus、industry、gov 的原文仍留在各自仓库，下面按仓库保存副本。本仓库根目录的 `README.md`、`DEMO.md`、`GAPS.md` 也保留；根目录 README 另外指向本页。另外三篇通用说明按收集时的代码整理。
+本目录集中存放说明。campus、industry、gov 的原文仍留在各自仓库，下面按仓库保存副本。本仓库根目录的 `README.md`、`DEMO.md`、`GAPS.md` 也保留；根目录 README 另外指向本页。另外三篇通用说明按收集时的代码整理。产品需求与对标调研放在 `product/`。
 
 ## 仓库与演示
 
@@ -71,6 +71,11 @@ Pages 要能打开，对应仓库的 Settings → Pages 需选择 **Deploy from 
 | `liucheng` | `Park@2026` | 刘澄 | 规划建设局 · 空间监管专员 |
 
 态势大屏不登录也能看。
+
+## 产品文档
+
+- [三平台需求 v0.2](./product/requirements-v0.2.md)：DEMO 原型需求，覆盖产业运营（park-industry）、园区运营（park-campus）、政府管理（park-gov）
+- [竞品对标调研](./product/benchmark.md)：来源 B1–B12 的功能对标，供需求 v0.2 引用
 
 ## 通用说明
 
